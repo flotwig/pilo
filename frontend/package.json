@@ -1,4 +1,11 @@
 {
   "name": "frontend",
-  "version": "0.0.0-development"
+  "version": "0.0.0-development",
+  "scripts": {
+    "start": "parcel watch ./src/index.html"
+  },
+  "devDependencies": {
+    "parcel": "^1.12.4",
+    "typescript": "^3.9.7"
+  }
 }
