@@ -1,0 +1,14 @@
+{
+  "name": "pilo",
+  "version": "0.0.0-development",
+  "description": "Remotely see a PC's screen and send keyboard/power commands via a web interface.",
+  "repository": "https://github.com/flotwig/pilo",
+  "author": "Zach Bloomquist <pilo@chary.us>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "server",
+    "common"
+  ]
+}
