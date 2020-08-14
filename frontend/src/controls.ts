@@ -28,8 +28,16 @@ export function startControls() {
 
     ;['Power', 'WakeUp', 'Sleep'].map(code => {
       const el = document.querySelector(`button#${code.toLowerCase()}`)
-      el.addEventListener('mousedown', () => document.dispatchEvent(new KeyboardEvent('keydown', { code })))
-      el.addEventListener('mouseup', () => document.dispatchEvent(new KeyboardEvent('keyup', { code })))
+
+      el.addEventListener('mousedown', () => {
+        log.info(`Pressing ${code} button...`)
+        document.dispatchEvent(new KeyboardEvent('keydown', { code }))
+      })
+
+      el.addEventListener('mouseup', () => {
+        log.info(`${code} button released.`)
+        document.dispatchEvent(new KeyboardEvent('keyup', { code }))
+      })
     })
   })
 }
