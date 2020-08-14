@@ -9,7 +9,8 @@
   "workspaces": [
     "frontend",
     "server",
-    "common"
+    "common",
+    "e2e"
   ],
   "scripts": {
     "start": "yarn workspace frontend start & yarn workspace server start"

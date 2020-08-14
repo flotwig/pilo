@@ -1,0 +1,12 @@
+{
+  "name": "e2e",
+  "version": "0.0.0-development",
+  "devDependencies": {
+    "cypress": "^4.12.1"
+  },
+  "scripts": {
+    "test": "yarn start:test:server & yarn cypress:run",
+    "cypress:run": "cypress run .",
+    "start:test:server": "cd .. && PORT=3000 SERIAL_PATH=/dev/null AUTH_SHA=662239d96ee57b063a44637e3a1eb0b80ce20ad38b025289ca70ea97a2016a20 yarn start"
+  }
+}
