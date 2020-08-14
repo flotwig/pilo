@@ -2,6 +2,7 @@ import SerialPort from 'serialport'
 
 export class Keyboard {
   port: SerialPort
+  connect: Function
 
   constructor(opts: {
     path: string

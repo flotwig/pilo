@@ -6,6 +6,29 @@ Lights-out management via Raspberry Pi.
 Setup
 ===
 
+Wiring diagram:
+```
+                                        Ext. Ethernet
+                                            ^
+                                            |   Ext. 5V Power
+    +---------------------------+           |        ^
+    |                   Ethernet+-----------+        |
+    | RasPi 3B+     USB Power In|--------------------+
+    | (or other)        USB Port|----------------+
+    |                   USB Port+-------+        |   +----------------------------+
+    +---------------------------+       |        +---+USB Port                    |
+                                        |       +----|D2 (DATA)      Arduino Nano |
++-------------------------------+       |       |----|D3 (CLK)        (or other)  |
+|             PS/2 Keyboard Port+--------------------|GND (GND)                   |
+|                       HDMI Out+-------|       +----+VIN (5V)                    |
+|  Server                       |      ||            +----------------------------+
+|                               |      ||
++-------------------------------+      ||   +-------------------------------+
+                                       |----+USB Plug      HDMI Capture Card|
+                                       +----+HDMI In                        |
+                                            +-------------------------------+
+```
+
 0. Connect everything.
 1. Set up an MJPEG streaming server for the USB HDMI capture card.
     1. Follow the instructions on the [`uv4l`](http://www.linux-projects.org/uv4l/installation/) website to install the `apt` sources for `uv4l`.

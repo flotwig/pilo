@@ -19,7 +19,7 @@ export class WebSocketServer extends EventEmitter {
 
       socket.on('message', (data: string) => {
         const parsed: CommandFrame = JSON.parse(data)
-        console.log(`Received command (connectionId: ${connectionId})`, parsed)
+        console.log(`Received command (connectionId: ${connectionId})`, parsed.type)
 
         this.emit('command', parsed)
       })

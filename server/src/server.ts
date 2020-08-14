@@ -33,28 +33,32 @@ export class Server extends EventEmitter {
   handleVideo = (req, res) => {
     const streamId = streamCounter++
 
-    console.log(`Proxying video request to ${this.mjpegUrl}... (streamId: ${streamId})`)
+    const [log, error] = [console.log, console.error].map((fn) => (...args) => {
+      fn(`(streamId: ${streamId})`, ...args)
+    })
+
+    log(`Proxying video request to ${this.mjpegUrl}...`)
 
     const outgoingReq = http.request(this.mjpegUrl)
     .on('response', (incomingRes) => {
-      console.log(`Received response with statusCode ${incomingRes.statusCode}. Proxying MJPEG response. (streamId: ${streamId})`)
+      log(`Received response with statusCode ${incomingRes.statusCode}. Proxying MJPEG response.`)
 
       res.writeHead(incomingRes.statusCode, incomingRes.statusMessage, incomingRes.headers)
       res.flushHeaders()
       incomingRes.pipe(res)
 
       res.on('close', () => {
-        console.log(`Response closed, destroying upstream socket. (streamId: ${streamId})`)
+        log('Response closed, destroying upstream socket.')
         incomingRes.destroy()
       })
     })
     .on('error', (err) => {
-      console.error('Error proxying MJPEG.', err)
+      error('Error proxying MJPEG. Is the video server running?', err)
       res.sendStatus(500)
     })
 
     res.on('close', () => {
-      console.log(`Response closed, destroying outgoing request. (streamId: ${streamId})`)
+      log('Response closed, destroying outgoing request.')
       outgoingReq.destroy()
     })
 

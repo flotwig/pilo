@@ -4,9 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pilo</title>
+  <link rel="stylesheet" href="./index.scss"/>
 </head>
 <body>
-  <img alt="MJPEG stream from server" id="video"/>
-  <script src="index.ts"></script>
+  <div id="video-container">
+    <img alt="MJPEG stream from server" id="video"/>
+  </div>
+  <div id="interface">
+    <div id="logo">
+      Pilo
+      <div id="controls">
+        <button id="power">Power</button>
+        <button id="sleep">Sleep</button>
+        <button id="wakeup">WakeUp</button>
+      </div>
+    </div>
+    <ul id="log">
+    </ul>
+  </div>
+  <script src="./index.ts"></script>
 </body>
 </html>

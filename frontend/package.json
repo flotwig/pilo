@@ -5,7 +5,9 @@
     "start": "parcel watch ./src/index.html"
   },
   "devDependencies": {
+    "keycodes-to-ps2-scan-codes": "^1.0.1",
     "parcel": "^1.12.4",
+    "sass": "^1.26.10",
     "typescript": "^3.9.7"
   }
 }
