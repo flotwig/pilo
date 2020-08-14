@@ -1,0 +1,43 @@
+name: Tests
+on: [push]
+jobs:
+  e2e-run-firefox:
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node12.14.1-chrome83-ff77
+      options: --user 1001
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          start: yarn workspace e2e start:test:server
+          wait-on: 'http://baruser:foopass@127.0.0.1:3000'
+          project: './e2e'
+          browser: firefox
+          group: 'Firefox'
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  e2e-run-chrome:
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node12.14.1-chrome83-ff77
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          start: yarn workspace e2e start:test:server
+          wait-on: 'http://baruser:foopass@127.0.0.1:3000'
+          project: './e2e'
+          browser: chrome
+          group: 'Chrome'
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

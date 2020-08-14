@@ -7,6 +7,7 @@
   "scripts": {
     "test": "yarn start:test:server & yarn cypress:run",
     "cypress:run": "cypress run .",
-    "start:test:server": "cd .. && PORT=3000 SERIAL_PATH=/dev/null AUTH_SHA=662239d96ee57b063a44637e3a1eb0b80ce20ad38b025289ca70ea97a2016a20 yarn start"
+    "cypress:open": "cypress open .",
+    "start:test:server": "cd .. && PORT=3000 SERIAL_PATH=/dev/null AUTH_SHA=6cc083b19ddbf58194006470468e38f8c9080b6a0872e68d1410a148921f2e2d yarn start"
   }
 }
