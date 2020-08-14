@@ -4,30 +4,55 @@ import path from 'path'
 import { CommandFrame } from 'common'
 import { EventEmitter } from 'events'
 import http from 'http'
+import { isAuthorized } from './auth'
 
 let streamCounter = 0
 
+const unauthorizedHttpMessage = 'HTTP/1.1 401 Unauthorized\r\nwww-authenticate: basic\r\n\r\n'
+
 export class Server extends EventEmitter {
   mjpegUrl: string
+  authSha: string
+  app: express.Application
 
-  constructor(opts: { mjpegUrl: string }) {
+  constructor(opts: { mjpegUrl: string, authSha: string }) {
     super()
     this.mjpegUrl = opts.mjpegUrl
+    this.authSha = opts.authSha
+
+    const app = this.app = express()
+
+    app.set('x-powered-by', false)
+
+    app.use(this.authMiddleware)
+
+    app.use(express.static(path.join(__dirname, '../../frontend/dist')))
+    app.get('/video.mjpeg', this.handleVideo)
   }
 
   listen(port: number) {
-    const app = express()
-    // app.use(authMiddleware)
-    app.use(express.static(path.join(__dirname, '../../frontend/dist')))
-
-    app.get('/video.mjpeg', this.handleVideo)
-
-    const server = app.listen(port, () => console.log(`pilo listening on port ${port}`))
-    const webSocketServer = new WebSocketServer({ httpServer: server })
+    const server = this.app.listen(port, () => console.log(`pilo listening on port ${port}`))
+    const webSocketServer = new WebSocketServer()
 
     webSocketServer.on('command', (data: CommandFrame) => {
       this.emit(data.type, data.ps2Command)
     })
+
+    server.on('upgrade', (request, socket, head) => {
+      if (isAuthorized(this.authSha, request)) {
+        return webSocketServer.handleUpgrade(request, socket, head)
+      }
+
+      socket.end(unauthorizedHttpMessage)
+    })
+  }
+
+  authMiddleware = (req: express.Request, res: express.Response, next) => {
+    if (isAuthorized(this.authSha, req)) {
+      return next()
+    }
+
+    res.connection.end(unauthorizedHttpMessage)
   }
 
   handleVideo = (req, res) => {
