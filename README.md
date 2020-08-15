@@ -1,46 +1,52 @@
 pilo
 ====
 
-Lights-out management via Raspberry Pi.
+RPi-powered lights-out management for servers. Remotely control the keyboard, power, and see the screen of a server.
 
-Setup
-===
+## Production Setup
 
-Wiring diagram:
+See [the Pilo blog post](https://zach.bloomqu.ist/blog/2020/08/pilo-raspberry-pi-lights-out-management.html) for detailed instructions on production hardware/software setup.
+
+## Environment Variables
+
+* `AUTH_SHA` (required) - SHA256 hash of the desired `username:password` string to log in to Pilo.
+* `PORT` (default: `3000`) - port to listen for HTTP connections on
+* `SERIAL_PATH` (default: `/dev/ttyUSB0`) - the path to the serial ioctl to use to communicate with the PS/2 controller
+* `SERIAL_BAUD_RATE` (default: `9600`) - baud rate for PS/2 controller connection
+* `MJPEG_URL` (default: `http://127.0.0.1:9000/stream/video.mjpeg`) - URL to reverse-proxy video requests to
+
+## Development
+
+### Install Dependencies
+
+`pilo` uses `yarn` to manage workspaces. To install dependencies:
+
 ```
-                                        Ext. Ethernet
-                                            ^
-                                            |   Ext. 5V Power
-    +---------------------------+           |        ^
-    |                   Ethernet+-----------+        |
-    | RasPi 3B+     USB Power In|--------------------+
-    | (or other)        USB Port|----------------+
-    |                   USB Port+-------+        |   +----------------------------+
-    +---------------------------+       |        +---+USB Port                    |
-                                        |       +----|D2 (DATA)      Arduino Nano |
-+-------------------------------+       |       |----|D3 (CLK)        (or other)  |
-|             PS/2 Keyboard Port+--------------------|GND (GND)                   |
-|                       HDMI Out+-------|       +----+VIN (5V)                    |
-|  Server                       |      ||            +----------------------------+
-|                               |      ||
-+-------------------------------+      ||   +-------------------------------+
-                                       |----+USB Plug      HDMI Capture Card|
-                                       +----+HDMI In                        |
-                                            +-------------------------------+
+yarn
 ```
 
-0. Connect everything.
-1. Set up an MJPEG streaming server for the USB HDMI capture card.
-    1. Follow the instructions on the [`uv4l`](http://www.linux-projects.org/uv4l/installation/) website to install the `apt` sources for `uv4l`.
-    2. Update the `apt` index, and install the required packages:
-        ```
-        apt update
-        apt install uv4l uv4l-server uv4l-uvc uv4l-mjpegstream
-        ```
-    3. Retrieve your USB HDMI capture card's ID by running `lsusb`. It should be a hexadecimal string like `1a2b:3c4d`.
-    4. Start the `uv4l` server listening on `127.0.0.1:9000`:
-        ```
-        uv4l --driver uvc --device-id '534d:2109' --auto-video_nr --server-option '--port=9000' --server-option '--bind-host-address=127.0.0.1'
-        ```
-       You should be able to access a MJPEG stream of the USB HDMI capture card locally on the Pi at `http://127.0.0.1:9000/stream/video.mjpeg`.
-2.
+### Start server + frontend in development mode
+
+The following command will run `yarn start` in the `frontend` and `server` packages, which will automatically begin watching code for changes and reloading the `frontend`/`server` as needed:
+
+```
+yarn start
+```
+
+It will probably complain about a missing `AUTH_SHA`, so pass one.
+
+Alternatively, you can use the test server configuration, which has the default username and password `baruser:foopass`:
+
+```
+cd e2e
+yarn start:test:server
+```
+
+### Run e2e tests
+
+Assuming port 3000 is free, this command will start the test server and begin testing:
+
+```
+cd e2e
+yarn test
+```
