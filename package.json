@@ -4,7 +4,7 @@
   "description": "Remotely see a PC's screen and send keyboard/power commands via a web interface.",
   "repository": "https://github.com/flotwig/pilo",
   "author": "Zach Bloomquist <pilo@chary.us>",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "private": true,
   "workspaces": [
     "frontend",
