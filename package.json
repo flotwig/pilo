@@ -1,8 +1,10 @@
 {
   "name": "pilo",
   "version": "0.0.0-development",
-  "description": "Remotely see a PC's screen and send keyboard/power commands via a web interface.",
+  "description": "RPi-powered lights-out management for servers. Remotely control the keyboard, power, and see the screen of a server. ",
+  "bin": "./server/dist/index.js",
   "repository": "https://github.com/flotwig/pilo",
+  "homepage": "https://github.com/flotwig/pilo",
   "author": "Zach Bloomquist <pilo@chary.us>",
   "license": "AGPL-3.0-only",
   "private": true,
@@ -12,7 +14,16 @@
     "common",
     "e2e"
   ],
+  "files": [
+    "./frontend/dist",
+    "./server/dist"
+  ],
   "scripts": {
-    "start": "yarn workspace frontend start & yarn workspace server start"
+    "start": "yarn workspace frontend start & yarn workspace server start",
+    "clean": "yarn workspace frontend clean & yarn workspace server clean",
+    "build": "yarn workspace frontend build & yarn workspace server build",
+    "prepack": "yarn clean && yarn build && yarn prepare:pkg",
+    "prepare:pkg": "node ./prepare-pkg.js",
+    "postpack": "rm package.json && mv package.json.bak package.json"
   }
 }

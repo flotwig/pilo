@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Server } from './server'
 import { Keyboard } from './keyboard'
 
