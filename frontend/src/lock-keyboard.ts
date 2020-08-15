@@ -1,9 +1,4 @@
-import {
-  keysToScanCodes
-} from 'keycodes-to-ps2-scan-codes'
 import log from './log'
-
-const keys = Object.keys(keysToScanCodes)
 
 export function lockKeyboard() {
   log.info('Attempting to lock keyboard...')
