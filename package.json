@@ -1,7 +1,7 @@
 {
   "name": "pilo",
   "version": "0.0.0-development",
-  "description": "RPi-powered lights-out management for servers. Remotely control the keyboard, power, and see the screen of a server. ",
+  "description": "RPi-powered lights-out management for servers. Remotely control the keyboard, power, and see the screen of a server.",
   "bin": "./server/dist/index.js",
   "repository": "https://github.com/flotwig/pilo",
   "homepage": "https://github.com/flotwig/pilo",
