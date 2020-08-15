@@ -14,7 +14,9 @@ export class WebSocketServer extends EventEmitter {
 
     wss.on('connection', (socket) => {
       const connectionId = connectionCounter++
-      console.log(`Websocket connection received (connectionId: ${connectionId})`)
+      const log = (...args) => console.log(`(connectionId: ${connectionId})`, ...args)
+
+      log('Websocket connection received')
 
       socket.on('message', (data: string) => {
         const parsed: CommandFrame = JSON.parse(data)
@@ -30,8 +32,6 @@ export class WebSocketServer extends EventEmitter {
   }
 
   handleUpgrade = (request, socket, head) => {
-    this.wss.handleUpgrade(request, socket, head, function done(ws) {
-      this.wss.emit('connection', ws)
-    })
+    this.wss.handleUpgrade(request, socket, head, (ws) => this.wss.emit('connection', ws))
   }
 }
