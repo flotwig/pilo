@@ -3,7 +3,7 @@ import {
   getBreakBytes,
   getMakeBytes,
 } from 'keycodes-to-ps2-scan-codes'
-import { CommandFrame } from 'common'
+import { ClientMessage } from 'common'
 
 export function startControls() {
   log.info('Connecting to websocket...')
@@ -54,7 +54,7 @@ function KeyEventHandler (ws: WebSocket) {
       return
     }
 
-    const frame: CommandFrame = {
+    const frame: ClientMessage = {
       type: 'ps2-command',
       ps2Command
     }

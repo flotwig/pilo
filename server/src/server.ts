@@ -1,7 +1,7 @@
 import { WebSocketServer } from './websocket-server'
 import express from 'express'
 import path from 'path'
-import { CommandFrame } from 'common'
+import { ClientMessage } from 'common'
 import { EventEmitter } from 'events'
 import http from 'http'
 import { isAuthorized } from './auth'
@@ -34,7 +34,7 @@ export class Server extends EventEmitter {
     const server = this.app.listen(port, () => console.log(`pilo listening on port ${port}`))
     const webSocketServer = new WebSocketServer()
 
-    webSocketServer.on('command', (data: CommandFrame) => {
+    webSocketServer.on('command', (data: ClientMessage) => {
       this.emit(data.type, data.ps2Command)
     })
 

@@ -1,5 +1,5 @@
 import * as ws from 'ws'
-import { CommandFrame } from 'common'
+import { ClientMessage } from 'common'
 import { EventEmitter } from 'events'
 
 let connectionCounter = 0
@@ -19,14 +19,14 @@ export class WebSocketServer extends EventEmitter {
       log('Websocket connection received')
 
       socket.on('message', (data: string) => {
-        const parsed: CommandFrame = JSON.parse(data)
-        console.log(`Received command (connectionId: ${connectionId})`, parsed.type)
+        const parsed: ClientMessage = JSON.parse(data)
+        log('Received command', parsed.type)
 
         this.emit('command', parsed)
       })
 
       socket.on('close', () => {
-        console.log(`Websocket disconnected (connectionId: ${connectionId})`)
+        log('Websocket disconnected')
       })
     })
   }
