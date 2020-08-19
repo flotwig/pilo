@@ -3,6 +3,10 @@ pilo
 
 RPi-powered lights-out management for servers. Remotely control the keyboard, power, and see the screen of a server.
 
+| ![GIF demo of Pilo's web interface](https://zach.bloomqu.ist/assets/pilo-demo.gif) |
+| --- |
+| GIF demo of Pilo's web interface, showing a user booting a system and accessing the BIOS and disk encryption passphrase screen via the web. |
+
 ## Production Setup
 
 See [the Pilo blog post](https://zach.bloomqu.ist/blog/2020/08/pilo-raspberry-pi-lights-out-management.html) for detailed instructions on production hardware/software setup.
