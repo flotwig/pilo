@@ -3,7 +3,7 @@
   "version": "0.0.0-development",
   "description": "RPi-powered lights-out management for servers. Remotely control the keyboard, power, and see the screen of a server.",
   "bin": "./server/dist/index.js",
-  "repository": "https://github.com/flotwig/pilo",
+  "repository": "https://github.com/flotwig/pilo.git",
   "homepage": "https://github.com/flotwig/pilo",
   "author": "Zach Bloomquist <pilo@chary.us>",
   "license": "AGPL-3.0-only",
@@ -18,12 +18,36 @@
     "./frontend/dist",
     "./server/dist"
   ],
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "yarn pack --filename release.tar.gz",
+          "publishCmd": "npm publish ./release.tar.gz"
+        }
+      ]
+    ]
+  },
   "scripts": {
     "start": "yarn workspace frontend start & yarn workspace server start",
     "clean": "yarn workspace frontend clean & yarn workspace server clean",
     "build": "yarn workspace frontend build & yarn workspace server build",
     "prepack": "yarn clean && yarn build && yarn prepare:pkg",
     "prepare:pkg": "node ./prepare-pkg.js",
-    "postpack": "rm package.json && mv package.json.bak package.json"
+    "postpublish": "rm package.json && mv package.json.bak package.json"
+  },
+  "devDependencies": {
+    "@semantic-release/exec": "^5.0.0",
+    "semantic-release": "^17.1.1"
   }
 }
